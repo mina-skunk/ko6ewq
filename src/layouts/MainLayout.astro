@@ -1,0 +1,31 @@
+---
+import "../styles/global.css";
+import CommonHead from "../components/CommonHead.astro";
+import ButtonLink from "../components/ButtonLink.astro";
+
+const { title, description } = Astro.props;
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <CommonHead title={title} description={description} />
+  </head>
+  <body
+    class="m-0 p-0 bg-latte-base dark:bg-mocha-base text-latte-text dark:text-mocha-text"
+  >
+    <nav class="m-0 p-0 shadow bg-latte-maroon dark:bg-mocha-maroon text-mocha-text dark:text-latte-text flex flex-row box-border">
+      <ButtonLink invert="true" href="/ko6ewq/">Home</ButtonLink>
+      <ButtonLink invert="true" href="/ko6ewq/radio-clubs">Radio Clubs</ButtonLink>
+      <ButtonLink invert="true" href="/ko6ewq/stations">Radio Stations</ButtonLink>
+    </nav>
+    <main class="mx-auto p-1">
+      <slot />
+    </main>
+    <footer class="mx-auto text-center">
+      Copyright © {year}
+    </footer>
+  </body>
+</html>

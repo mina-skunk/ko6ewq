@@ -1,0 +1,25 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import ButtonLink from "../../components/ButtonLink.astro";
+
+const title = "Radio Stations";
+const description = "local Radio Stations";
+---
+
+<MainLayout title={title} description={description}>
+  <h1 class="text-2xl font-bold text-center m-auto">{title}</h1>
+  <div class="flex flex-col flex-nowrap m-auto">
+    <ButtonLink href="/ko6ewq/stations/amateur-radio">
+      Amatrue Radio Stations
+    </ButtonLink>
+    <ButtonLink href="/ko6ewq/stations/voice-2m">
+      2 Meter Voice
+    </ButtonLink>
+    <ButtonLink href="/ko6ewq/stations/voice-1-25m">
+      1.25 Meter Voice
+    </ButtonLink>
+    <ButtonLink href="/ko6ewq/stations/voice-70cm">
+      70 CM Voice
+    </ButtonLink>
+  </div>
+</MainLayout>

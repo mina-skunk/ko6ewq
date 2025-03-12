@@ -1,0 +1,179 @@
+---
+import { type CollectionEntry, getCollection, getEntry } from "astro:content";
+import { render } from "astro:content";
+import Prose from "../../components/Prose.astro";
+import DisplayFrequency from "../../components/DisplayFrequency.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+import ButtonLink from "../../components/ButtonLink.astro";
+
+export async function getStaticPaths() {
+  const stations = await getCollection("stations");
+  return stations
+    .sort((a, b) => a.data.frequency.valueOf() - b.data.frequency.valueOf())
+    .map((station, index, array) => ({
+      params: { slug: station.id },
+      props: {
+        station,
+        prev: index >= 0 && array[index - 1],
+        next: array[index + 1],
+      },
+    }));
+}
+type Props = { [key: string]: CollectionEntry<"stations"> };
+
+const { station, prev, next } = Astro.props;
+const club =
+  station.data.club && (await getEntry("radioClubs", station.data.club));
+
+const { Content } = await render(station);
+---
+
+<MainLayout title={station.data.name} description={station.body}>
+  <h1 class="font-bold text-2xl text-center m-auto">{station.data.name}</h1>
+  <table class="border-collapse m-auto">
+    <tr class="border-t-1">
+      <th class="text-right pr-2">Callsign</th>
+      <td>{station.data.callsign}</td>
+    </tr>
+    <tr class="border-t-1">
+      <th class="text-right pr-2">Frequency</th>
+      <td>
+        <DisplayFrequency frequency={station.data.frequency} />
+      </td>
+    </tr>
+    {
+      station.data.offset && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Offset</th>
+          <td>
+            <DisplayFrequency frequency={station.data.offset} />
+          </td>
+        </tr>
+      )
+    }
+    {
+      station.data.tone && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Tone</th>
+          <td>{station.data.tone}</td>
+        </tr>
+      )
+    }
+    {
+      station.data.echolink && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Echolink</th>
+          <td>{station.data.echolink}</td>
+        </tr>
+      )
+    }
+    {
+      station.data.allstarlink && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">AllStarLink</th>
+          <td>{station.data.allstarlink}</td>
+        </tr>
+      )
+    }
+    {
+      station.data.grid && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Grid</th>
+          <td>{station.data.grid}</td>
+        </tr>
+      )
+    }
+    {
+      station.data.website && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Website</th>
+          <td>
+            <a href={station.data.website}>{station.data.website}</a>
+          </td>
+        </tr>
+      )
+    }
+    {
+      station.data.repeaterworld && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">RepeaterWorld</th>
+          <td>
+            <a
+              href={`https://repeater.world/repeaters/${station.data.repeaterworld}`}
+            >
+              {station.data.repeaterworld}
+            </a>
+          </td>
+        </tr>
+      )
+    }
+    {
+      station.data.repeaterbook && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">RepeaterBook</th>
+          <td>
+            <a
+              href={`https://www.repeaterbook.com/repeaters/details.php?state_id=${station.data.repeaterbook.stateid}&ID=${station.data.repeaterbook.id}`}
+            >
+              🔗
+            </a>
+          </td>
+        </tr>
+      )
+    }
+    {
+      club && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Club</th>
+          <td>
+            <a href={club.data.website}>{club.data.name}</a>
+          </td>
+        </tr>
+      )
+    }
+    {
+      station.data.tags && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Tags</th>
+          <td>
+            {station.data.tags.map((tag) => (
+              <span class="text-xs rounded bg-mocha-surface1 p-0.5">{tag}</span>
+            ))}
+          </td>
+        </tr>
+      )
+    }
+    {
+      station.data.categories && (
+        <tr class="border-t-1">
+          <th class="text-right pr-2">Categories</th>
+          <td>
+            {station.data.categories.map((tag) => (
+              <span class="text-xs rounded bg-mocha-surface1 p-0.5">{tag}</span>
+            ))}
+          </td>
+        </tr>
+      )
+    }
+  </table>
+  <Prose>
+    <Content />
+  </Prose>
+  <div class="flex flex-row flex-nowrap">
+    {
+      prev && (
+        <ButtonLink href={`/ko6ewq/stations/${prev.id}/`} title={prev.data.name}>
+          Prev
+        </ButtonLink>
+      )
+    }
+    <span class="grow"></span>
+    {
+      next && (
+        <ButtonLink href={`/ko6ewq/stations/${next.id}/`} title={next.data.name}>
+          Next
+        </ButtonLink>
+      )
+    }
+  </div>
+</MainLayout>
