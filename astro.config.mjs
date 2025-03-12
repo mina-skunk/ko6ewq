@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
   site: "https://mina-skunk.github.io/",
-  base: "/ko6ewq",
+  base: "ko6ewq",
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
