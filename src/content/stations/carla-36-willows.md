@@ -3,7 +3,7 @@ name: System 36 Willows
 callsign: K6LNK
 frequency: 146115000
 website: https://www.carlaradio.net/thesystem/systemdetail.php?sysid=36
-offset: -600000
+offset: 600000
 tone: 123
 echolink: '360571'
 grid: CM89rj
